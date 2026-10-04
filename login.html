@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RINL Factory Safety Monitoring System - Login</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        body {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .login-card {
+            padding: 3rem;
+            width: 100%;
+            max-width: 450px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0ea5e9, #38bdf8, #0284c7);
+        }
+
+        .logo-placeholder {
+            width: 70px;
+            height: 70px;
+            background: rgba(15, 23, 42, 0.6);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem auto;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .logo-placeholder i {
+            font-size: 2rem;
+            color: #38bdf8;
+            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+        }
+
+        .login-title {
+            font-family: 'Rajdhani', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 0.25rem;
+        }
+
+        .login-subtitle {
+            font-size: 0.875rem;
+            text-align: center;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .input-group-steel {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-group-steel .icon-prefix {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94a3b8;
+            transition: color 0.3s ease;
+            z-index: 10;
+        }
+
+        .form-control-steel {
+            padding-left: 2.75rem !important;
+        }
+
+        .input-group-steel:focus-within .icon-prefix {
+            color: #38bdf8;
+        }
+
+        .toggle-password {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            z-index: 10;
+            background: none;
+            border: none;
+            padding: 0;
+        }
+
+        .toggle-password:hover {
+            color: #e2e8f0;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .register-link a {
+            color: #38bdf8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        .register-link a:hover {
+            color: #7dd3fc;
+            text-shadow: 0 0 8px rgba(125, 211, 252, 0.4);
+        }
+
+        @media (max-width: 576px) {
+            .login-card {
+                padding: 2rem;
+                margin: 1rem;
+                border-radius: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card glass-panel">
+        <!-- Logo -->
+        <div class="logo-placeholder pulse-glow">
+            <i class="fa-solid fa-industry"></i>
+        </div>
+
+        <!-- Headings -->
+        <h2 class="login-title">Factory Safety Monitoring System</h2>
+        <p class="login-subtitle">Secure Access Portal</p>
+
+        <!-- Alert -->
+        <div id="loginAlert" class="alert badge-safety-critical d-none text-center py-2" role="alert" style="font-size: 0.875rem; border-radius: 8px;"></div>
+
+        <!-- Form -->
+        <form id="loginForm" onsubmit="loginUser(event)">
+            <!-- Email -->
+            <div class="input-group-steel">
+                <i class="fa-solid fa-envelope icon-prefix"></i>
+                <input type="email" class="form-control-steel" id="email" required pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$" placeholder="Email Address" title="Please enter a valid email address">
+            </div>
+
+            <!-- Password -->
+            <div class="input-group-steel">
+                <i class="fa-solid fa-lock icon-prefix"></i>
+                <input type="password" class="form-control-steel" id="password" required placeholder="Password">
+                <button type="button" class="toggle-password" id="togglePasswordBtn" aria-label="Toggle password visibility">
+                    <i class="fa-regular fa-eye" id="togglePasswordIcon"></i>
+                </button>
+            </div>
+
+            <!-- Submit -->
+            <button type="submit" class="btn-login btn-steel-blue mt-2">
+                <span>Login</span> <i class="fa-solid fa-arrow-right"></i>
+            </button>
+            <div class="text-center mt-2">
+                <small class="text-muted">Sign In to Dashboard</small>
+            </div>
+        </form>
+
+        <!-- Links -->
+        <div class="d-flex justify-content-between mt-4">
+            <a href="#" class="text-decoration-none" style="font-size: 0.875rem; color: #64748b; transition: color 0.3s ease;" onmouseover="this.style.color='#0284c7'" onmouseout="this.style.color='#64748b'"><i class="fa-solid fa-key me-1"></i>Forgot Password?</a>
+            <span style="font-size: 0.875rem; color: #94a3b8;">No account? <a href="register.html" class="fw-medium text-decoration-none" style="color: #0284c7; transition: color 0.3s ease;" onmouseover="this.style.color='#0ea5e9'" onmouseout="this.style.color='#0284c7'">Register Worker</a></span>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        // Toggle password visibility
+        const togglePasswordBtn = document.getElementById('togglePasswordBtn');
+        const passwordInput = document.getElementById('password');
+        const togglePasswordIcon = document.getElementById('togglePasswordIcon');
+
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            
+            if(type === 'text') {
+                togglePasswordIcon.classList.remove('fa-eye');
+                togglePasswordIcon.classList.add('fa-eye-slash');
+                togglePasswordIcon.style.color = '#38bdf8';
+            } else {
+                togglePasswordIcon.classList.remove('fa-eye-slash');
+                togglePasswordIcon.classList.add('fa-eye');
+                togglePasswordIcon.style.color = '#64748b';
+            }
+        });
+    </script>
+</body>
+</html>

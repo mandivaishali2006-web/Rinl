@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RINL - Worker Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- html5-qrcode CDN -->
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="sidebar-layout">
+        <!-- Sidebar Navigation -->
+        <aside class="sidebar shadow-sm d-none d-md-block">
+            <div class="sidebar-header">
+                <div class="d-flex align-items-center">
+                    <span class="fa-stack fa-lg me-2">
+                        <i class="fa-solid fa-circle fa-stack-2x text-glow-blue" style="color: rgba(0, 130, 163, 0.1);"></i>
+                        <i class="fa-solid fa-industry fa-stack-1x" style="color: var(--electric-blue);"></i>
+                    </span>
+                    <div>
+                        <h5 class="mb-0 fw-bold text-glow-blue" style="letter-spacing: 1px;">RINL STEEL</h5>
+                        <small class="text-muted text-uppercase" style="font-size: 0.7rem; letter-spacing: 1px;">Safety System</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-menu">
+                <a href="worker-dashboard.html" class="sidebar-menu-item active">
+                    <i class="fa-solid fa-chart-line"></i><span>Dashboard</span>
+                </a>
+                <a href="#qr-section" class="sidebar-menu-item">
+                    <i class="fa-solid fa-qrcode"></i><span>Worker Identification</span>
+                </a>
+                <a href="report-issue.html" class="sidebar-menu-item">
+                    <i class="fa-solid fa-triangle-exclamation"></i><span>Report Safety Issue</span>
+                </a>
+                <a href="my-reports.html" class="sidebar-menu-item">
+                    <i class="fa-solid fa-clipboard-list"></i><span>My Reports</span>
+                </a>
+                <a href="issue-tracking.html" class="sidebar-menu-item">
+                    <i class="fa-solid fa-bars-progress"></i><span>Issue Tracking</span>
+                </a>
+                <a href="#" class="sidebar-menu-item">
+                    <i class="fa-solid fa-bell"></i><span>Safety Alerts</span>
+                </a>
+                <a href="#" class="sidebar-menu-item">
+                    <i class="fa-solid fa-user"></i><span>Profile</span>
+                </a>
+            </nav>
+            <div class="mt-auto p-4 position-absolute bottom-0 w-100 border-top" style="border-color: var(--panel-border) !important;">
+                <a href="#" onclick="logout()" class="btn btn-outline-danger w-100 rounded-pill py-2 text-uppercase fw-bold" style="font-size: 0.8rem;">
+                    <i class="fa-solid fa-power-off me-2"></i> Logout
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content flex-grow-1">
+            <!-- Dashboard Header -->
+            <div class="top-header mb-5">
+                <div>
+                    <h2 class="fw-bold mb-1" style="font-family: var(--font-heading);">OPERATIONAL DASHBOARD</h2>
+                    <p class="text-muted mb-0">System Status: <span class="badge badge-safety-active ms-2 pulse-glow"><i class="fa-solid fa-check-circle me-1"></i> NOMINAL</span></p>
+                </div>
+                <div class="d-flex align-items-center glass-panel px-4 py-2 border shadow-sm">
+                    <div class="bg-steel-blue-light rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 40px; height: 40px;">
+                        <i class="fa-solid fa-user-helmet-safety text-glow-blue fs-5"></i>
+                    </div>
+                    <div>
+                        <div class="fw-bold text-light lh-1" id="displayUserName">Worker Name</div>
+                        <small class="text-muted fw-semibold text-uppercase" style="font-size: 0.7rem;" id="displayUserRole">ROLE</small>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Action Cards Grid -->
+            <div class="row g-4 mb-5">
+                <!-- Report Issue -->
+                <div class="col-md-6 col-lg-3">
+                    <a href="report-issue.html" class="text-decoration-none">
+                        <div class="dashboard-card h-100 glass-panel p-4 text-center">
+                            <div class="icon-box bg-safety-orange-light mx-auto">
+                                <i class="fa-solid fa-triangle-exclamation"></i>
+                            </div>
+                            <h5 class="fw-bold text-light">Report New Issue</h5>
+                            <p class="text-muted small mb-0">Log a new safety hazard.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- My Reports -->
+                <div class="col-md-6 col-lg-3">
+                    <a href="my-reports.html" class="text-decoration-none">
+                        <div class="dashboard-card h-100 glass-panel p-4 text-center">
+                            <div class="icon-box bg-steel-blue-light mx-auto">
+                                <i class="fa-solid fa-clipboard-check"></i>
+                            </div>
+                            <h5 class="fw-bold text-light">My Reports</h5>
+                            <p class="text-muted small mt-1 mb-0">View your submission history.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Status Tracking -->
+                <div class="col-md-6 col-lg-3">
+                    <a href="issue-tracking.html" class="text-decoration-none">
+                        <div class="dashboard-card h-100 glass-panel p-4 text-center">
+                            <div class="icon-box bg-safety-green-light mx-auto">
+                                <i class="fa-solid fa-bars-progress"></i>
+                            </div>
+                            <h5 class="fw-bold text-light">Issue Status</h5>
+                            <p class="text-muted small mb-0">Track ticket resolutions.</p>
+                        </div>
+                    </a>
+                </div>
+                <!-- Notifications -->
+                <div class="col-md-6 col-lg-3">
+                    <div class="dashboard-card h-100 glass-panel p-4 text-center" style="cursor: pointer;">
+                        <div class="icon-box bg-slate-light mx-auto">
+                            <i class="fa-solid fa-bell"></i>
+                        </div>
+                        <h5 class="fw-bold text-light">Safety Alerts</h5>
+                        <p class="text-muted small mb-0">No new alerts.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- QR Code Scanner Section -->
+            <div id="qr-section" class="glass-panel p-0 overflow-hidden mb-5">
+                <div class="card-header border-bottom py-3 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold" style="font-family: var(--font-heading);"><i class="fa-solid fa-qrcode text-glow-blue me-2"></i> WORKER IDENTIFICATION</h5>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-4 mb-md-0">
+                            <div id="qr-reader" style="width:100%; border-radius: 8px; overflow: hidden; border: 1px solid var(--panel-border);"></div>
+                            <button id="start-scanner-btn" class="btn-steel-blue mt-3 w-100 py-2 rounded-3"><i class="fa-solid fa-camera me-2"></i> Start Camera Scanner</button>
+                            <button id="stop-scanner-btn" class="btn btn-outline-danger mt-2 w-100 py-2 rounded-3" style="display:none;"><i class="fa-solid fa-stop me-2"></i> Stop Scanner</button>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="glass-panel p-4 h-100" id="worker-details-panel" style="display:none;">
+                                <h4 class="text-glow-blue mb-4 border-bottom border-secondary pb-2">Worker Details</h4>
+                                <div class="mb-3">
+                                    <small class="text-muted text-uppercase d-block mb-1">Full Name</small>
+                                    <h5 id="qr-worker-name" class="fw-bold mb-0">--</h5>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted text-uppercase d-block mb-1">Employee ID</small>
+                                    <p id="qr-worker-id" class="mb-0 fw-semibold">--</p>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted text-uppercase d-block mb-1">Department</small>
+                                    <p id="qr-worker-dept" class="mb-0">--</p>
+                                </div>
+                                <div class="mb-3">
+                                    <small class="text-muted text-uppercase d-block mb-1">Safety Training</small>
+                                    <span class="badge badge-safety-active px-3 py-2"><i class="fa-solid fa-certificate me-1"></i> Certified</span>
+                                </div>
+                                <div>
+                                    <small class="text-muted text-uppercase d-block mb-1">Recent Reports</small>
+                                    <p class="mb-0">2 Incidents reported this month</p>
+                                </div>
+                            </div>
+                            <div class="h-100 d-flex flex-column align-items-center justify-content-center text-muted" id="qr-placeholder">
+                                <i class="fa-solid fa-id-badge fs-1 mb-3 opacity-50"></i>
+                                <p>Scan a Worker ID QR Code to view details</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth('WORKER');
+
+            const name = localStorage.getItem('userName') || 'Operator';
+            const role = localStorage.getItem('userRole') || 'WORKER';
+            
+            document.getElementById('displayUserName').textContent = name;
+            document.getElementById('displayUserRole').textContent = role;
+
+            // QR Scanner Logic
+            let html5QrcodeScanner = null;
+            
+            document.getElementById('start-scanner-btn').addEventListener('click', () => {
+                if(!html5QrcodeScanner) {
+                    html5QrcodeScanner = new Html5QrcodeScanner(
+                        "qr-reader", { fps: 10, qrbox: 250 });
+                    
+                    html5QrcodeScanner.render(onScanSuccess, onScanError);
+                    document.getElementById('start-scanner-btn').style.display = 'none';
+                    document.getElementById('stop-scanner-btn').style.display = 'block';
+                }
+            });
+
+            document.getElementById('stop-scanner-btn').addEventListener('click', () => {
+                if(html5QrcodeScanner) {
+                    html5QrcodeScanner.clear();
+                    html5QrcodeScanner = null;
+                    document.getElementById('start-scanner-btn').style.display = 'block';
+                    document.getElementById('stop-scanner-btn').style.display = 'none';
+                }
+            });
+
+            function onScanSuccess(decodedText, decodedResult) {
+                // Mocking worker details based on scan
+                // Expecting decodedText to be worker ID or JSON
+                console.log(`Scan result: ${decodedText}`);
+                
+                document.getElementById('qr-placeholder').style.display = 'none';
+                document.getElementById('worker-details-panel').style.display = 'block';
+                
+                document.getElementById('qr-worker-name').textContent = "John Doe (Mocked)";
+                document.getElementById('qr-worker-id').textContent = decodedText.substring(0,10);
+                document.getElementById('qr-worker-dept').textContent = "Production";
+                
+                // Stop scanning after success
+                if(html5QrcodeScanner) {
+                    html5QrcodeScanner.clear();
+                    html5QrcodeScanner = null;
+                    document.getElementById('start-scanner-btn').style.display = 'block';
+                    document.getElementById('stop-scanner-btn').style.display = 'none';
+                }
+                
+                // Show a toast
+                alert("Worker identified successfully!");
+            }
+
+            function onScanError(errorMessage) {
+                // console.warn(errorMessage);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RINL - Admin Console</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="sidebar-layout">
+        <!-- Deep Dark Admin Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="fa-stack fa-lg me-2">
+                        <i class="fa-solid fa-square fa-stack-2x" style="color: rgba(255, 255, 255, 0.05);"></i>
+                        <i class="fa-solid fa-industry fa-stack-1x text-white"></i>
+                    </span>
+                    <div>
+                        <h4 class="mb-0 fw-bold text-white lh-1">RINL SYSTEM</h4>
+                        <small class="fw-bold" style="color: #94a3b8; font-size: 0.65rem; letter-spacing: 2px;">GLOBAL OVERRIDE</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-menu px-3">
+                <a href="admin-dashboard.html" class="sidebar-menu-item active rounded-3" style="border-left-color: #fff; background: rgba(255,255,255,0.1); color: #fff; text-shadow: none;">
+                    <i class="fa-solid fa-server"></i> System Overview
+                </a>
+                <a href="#users" class="sidebar-menu-item rounded-3 text-muted">
+                    <i class="fa-solid fa-users-gear"></i> User Management
+                </a>
+                <a href="#issues" class="sidebar-menu-item rounded-3 text-muted">
+                    <i class="fa-solid fa-shield-halved"></i> Database Control
+                </a>
+                <a href="#audit" class="sidebar-menu-item rounded-3 text-muted">
+                    <i class="fa-solid fa-timeline"></i> Audit Logs
+                </a>
+            </nav>
+            <div class="mt-auto p-4 border-top" style="border-color: var(--panel-border) !important;">
+                <a href="#" onclick="logout()" class="btn w-100 py-2 fw-bold" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); border-radius: 8px;">
+                    <i class="fa-solid fa-power-off me-2"></i> SYSTEM SHUTDOWN
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Premium Header -->
+            <div class="top-header mb-4">
+                <div>
+                    <h2 class="text-white mb-1" style="text-transform: uppercase;">Central Administration</h2>
+                    <p class="text-muted mb-0 fw-semibold">
+                        <i class="fa-regular fa-calendar me-2"></i><span id="currentDate"></span> | 
+                        <i class="fa-regular fa-clock mx-2"></i><span id="currentTime" class="text-white"></span>
+                    </p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="text-end me-3">
+                        <div class="fw-bold text-white lh-1" id="displayUserName">Admin</div>
+                        <span class="badge bg-light text-dark mt-1">ROOT ACCESS</span>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center border border-light" style="width: 48px; height: 48px; background: rgba(255, 255, 255, 0.1);">
+                        <i class="fa-solid fa-user-shield text-white fs-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Global Overview Cards -->
+            <div class="row g-4 mb-5">
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-light border-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="text-muted fw-bold mb-1 small text-uppercase">Total Registered Users</p>
+                                <h2 class="fw-bold text-white mb-0" id="statTotalUsers">0</h2>
+                            </div>
+                            <div class="icon-box bg-slate-light border-secondary text-white mb-0"><i class="fa-solid fa-users"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-info border-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="text-info fw-bold mb-1 small text-uppercase">Active Workers</p>
+                                <h2 class="fw-bold text-white mb-0" id="statWorkers">0</h2>
+                            </div>
+                            <div class="icon-box bg-steel-blue-light border-info text-info mb-0"><i class="fa-solid fa-user-helmet-safety"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-success border-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="text-success fw-bold mb-1 small text-uppercase">Active Managers</p>
+                                <h2 class="fw-bold text-white mb-0" id="statManagers">0</h2>
+                            </div>
+                            <div class="icon-box bg-safety-green-light border-success text-success mb-0"><i class="fa-solid fa-user-tie"></i></div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-danger border-4">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <p class="text-danger fw-bold mb-1 small text-uppercase">Total DB Issues</p>
+                                <h2 class="fw-bold text-white mb-0" id="statTotalIssues">0</h2>
+                            </div>
+                            <div class="icon-box bg-safety-orange-light border-danger text-danger mb-0"><i class="fa-solid fa-database"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Operator Management Table -->
+            <div id="users" class="dashboard-card p-0 overflow-hidden mb-5">
+                <div class="card-header border-bottom py-4 px-4 d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-white"><i class="fa-solid fa-users-gear text-white me-2"></i> OPERATOR DIRECTORY & ACCESS CONTROL</h5>
+                    <button class="btn btn-sm btn-outline-light rounded-pill px-3"><i class="fa-solid fa-user-plus me-2"></i> Add User</button>
+                </div>
+                <div class="steel-table-container">
+                    <table class="steel-table mb-0">
+                        <thead>
+                            <tr>
+                                <th>Emp ID</th>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Department</th>
+                                <th>Role</th>
+                                <th class="text-center">System Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <tr><td colspan="6" class="text-center py-5">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="row g-4 mb-4">
+                <!-- Global Issues Management -->
+                <div class="col-lg-8" id="issues">
+                    <div class="dashboard-card p-0 overflow-hidden h-100">
+                        <div class="card-header border-bottom py-4 px-4 d-flex justify-content-between align-items-center">
+                            <h5 class="mb-0 fw-bold text-white"><i class="fa-solid fa-triangle-exclamation text-danger me-2"></i> GLOBAL DATABASE ISSUES OVERRIDE</h5>
+                        </div>
+                        <div class="steel-table-container">
+                            <table class="steel-table mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Ref ID</th>
+                                        <th>Title</th>
+                                        <th>Status</th>
+                                        <th class="text-center">Admin Override</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="issuesTableBody">
+                                    <tr><td colspan="4" class="text-center py-5">Loading...</td></tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mock Audit Log -->
+                <div class="col-lg-4" id="audit">
+                    <div class="dashboard-card h-100">
+                        <h5 class="fw-bold text-white mb-4"><i class="fa-solid fa-timeline text-white me-2"></i> System Audit Trail</h5>
+                        <div class="tracking-timeline">
+                            <div class="timeline-item active">
+                                <div class="timeline-content">
+                                    <h6 class="text-white">Admin Login Event</h6>
+                                    <p>Root Access verified from localhost.</p>
+                                    <small class="text-muted">Just now</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item completed">
+                                <div class="timeline-content">
+                                    <h6 class="text-white">Issue #4 Status Changed</h6>
+                                    <p>Manager "test_mgr" set to RESOLVED.</p>
+                                    <small class="text-muted">1 hour ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item completed">
+                                <div class="timeline-content">
+                                    <h6 class="text-white">New User Registered</h6>
+                                    <p>Account created for worker@rinl.com.</p>
+                                    <small class="text-muted">3 hours ago</small>
+                                </div>
+                            </div>
+                            <div class="timeline-item completed">
+                                <div class="timeline-content">
+                                    <h6 class="text-white">Database Backup</h6>
+                                    <p>Automated backup completed successfully.</p>
+                                    <small class="text-muted">Yesterday at 00:00</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth('ADMIN');
+
+            const name = localStorage.getItem('userName') || 'System Admin';
+            document.getElementById('displayUserName').textContent = name;
+            
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            loadUsers();
+            loadIssues();
+        });
+
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        function loadUsers() {
+            const tbody = document.getElementById('usersTableBody');
+            try {
+                const users = ApiService.getUsers();
+                tbody.innerHTML = '';
+                
+                let workers = 0, managers = 0;
+
+                users.forEach(user => {
+                    if(user.role === 'WORKER') workers++;
+                    if(user.role === 'MANAGER') managers++;
+
+                    let roleBadge = '';
+                    if(user.role === 'ADMIN') roleBadge = '<span class="badge bg-light text-dark rounded-pill px-3">ADMIN</span>';
+                    else if(user.role === 'MANAGER') roleBadge = '<span class="badge bg-success rounded-pill px-3">MANAGER</span>';
+                    else roleBadge = '<span class="badge bg-info text-dark rounded-pill px-3">WORKER</span>';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-muted fw-bold">#${user.id || '-'}</td>
+                        <td class="text-white fw-bold">${user.name}</td>
+                        <td>${user.email}</td>
+                        <td>${user.department || 'N/A'}</td>
+                        <td>${roleBadge}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-outline-danger px-3 rounded-pill" onclick="deleteUser(${user.id})">
+                                <i class="fa-solid fa-user-xmark me-1"></i> Revoke
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+
+                document.getElementById('statTotalUsers').textContent = users.length;
+                document.getElementById('statWorkers').textContent = workers;
+                document.getElementById('statManagers').textContent = managers;
+
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="6" class="text-center py-4 text-danger">${error.message}</td></tr>`;
+            }
+        }
+
+        function deleteUser(id) {
+            if(confirm("DANGER: This action irrevocably removes operator access from the database. Proceed?")) {
+                try {
+                    ApiService.deleteUser(id);
+                    loadUsers();
+                } catch(e) {
+                    alert("Error removing user: " + e.message);
+                }
+            }
+        }
+
+        async function loadIssues() {
+            const tbody = document.getElementById('issuesTableBody');
+            try {
+                const issues = await ApiService.getAllIssues();
+                tbody.innerHTML = '';
+                
+                document.getElementById('statTotalIssues').textContent = issues.length;
+
+                issues.forEach(issue => {
+                    let statusBadge = '';
+                    if(issue.status === 'RESOLVED') statusBadge = '<span class="text-success fw-bold"><i class="fa-solid fa-check"></i> RESOLVED</span>';
+                    else if(issue.status === 'IN_PROGRESS') statusBadge = '<span class="text-warning fw-bold"><i class="fa-solid fa-spinner fa-spin"></i> IN PROGRESS</span>';
+                    else statusBadge = '<span class="text-danger fw-bold"><i class="fa-solid fa-exclamation"></i> OPEN</span>';
+
+                    const tr = document.createElement('tr');
+                    tr.innerHTML = `
+                        <td class="text-muted fw-bold">#${issue.id}</td>
+                        <td class="text-white fw-bold">${issue.title}</td>
+                        <td>${statusBadge}</td>
+                        <td class="text-center">
+                            <button class="btn btn-sm btn-danger px-3 rounded-pill" onclick="deleteIssueRecord(${issue.id})">
+                                <i class="fa-solid fa-trash me-1"></i> Purge DB Record
+                            </button>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="4" class="text-center py-4 text-danger">Connection Error</td></tr>`;
+            }
+        }
+
+        async function deleteIssueRecord(id) {
+            if(confirm("CRITICAL WARNING: This deletes the issue record entirely from the database. This action is irreversible. Proceed?")) {
+                try {
+                    await ApiService.deleteIssue(id);
+                    loadIssues();
+                } catch(error) {
+                    alert("Failed to delete issue: " + error.message);
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RINL - My Reports Tracker</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="sidebar-layout">
+        <!-- Worker Sidebar -->
+        <aside class="sidebar" style="border-right-color: var(--electric-blue) !important;">
+            <div class="sidebar-header d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center">
+                    <span class="fa-stack fa-lg me-2">
+                        <i class="fa-solid fa-square fa-stack-2x text-glow-blue" style="color: rgba(56, 189, 248, 0.15);"></i>
+                        <i class="fa-solid fa-industry fa-stack-1x" style="color: var(--electric-blue);"></i>
+                    </span>
+                    <div>
+                        <h4 class="mb-0 fw-bold text-white lh-1">RINL FACTORY</h4>
+                        <small class="text-glow-blue fw-bold" style="font-size: 0.65rem; letter-spacing: 2px;">OPERATOR TERMINAL</small>
+                    </div>
+                </div>
+            </div>
+            <nav class="sidebar-menu px-3">
+                <a href="worker-dashboard.html" class="sidebar-menu-item rounded-3">
+                    <i class="fa-solid fa-chart-line"></i> Dashboard Console
+                </a>
+                <a href="report-issue.html" class="sidebar-menu-item rounded-3">
+                    <i class="fa-solid fa-triangle-exclamation"></i> Report Issue
+                </a>
+                <a href="my-reports.html" class="sidebar-menu-item active rounded-3" style="border-left-color: var(--electric-blue); color: var(--electric-blue); background: linear-gradient(90deg, rgba(56, 189, 248, 0.15), transparent);">
+                    <i class="fa-solid fa-clipboard-list"></i> My Reports
+                </a>
+                <a href="#" class="sidebar-menu-item rounded-3">
+                    <i class="fa-solid fa-bell"></i> Notifications
+                </a>
+            </nav>
+            <div class="mt-auto p-4 border-top" style="border-color: var(--panel-border) !important;">
+                <a href="#" onclick="logout()" class="btn btn-outline-danger w-100 py-2 fw-bold" style="border-radius: 8px;">
+                    <i class="fa-solid fa-power-off me-2"></i> LOGOUT
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Premium Header -->
+            <div class="top-header mb-4">
+                <div>
+                    <h2 class="text-white mb-1" style="text-transform: uppercase;">My Safety Reports</h2>
+                    <p class="text-muted mb-0 fw-semibold">
+                        <i class="fa-regular fa-calendar me-2"></i><span id="currentDate"></span> | 
+                        <i class="fa-regular fa-clock mx-2"></i><span id="currentTime" class="text-glow-blue"></span>
+                    </p>
+                </div>
+                <div class="d-flex align-items-center">
+                    <div class="text-end me-3">
+                        <div class="fw-bold text-white lh-1" id="displayUserName">Worker Name</div>
+                        <span class="badge bg-primary mt-1">OPERATOR</span>
+                    </div>
+                    <div class="rounded-circle d-flex align-items-center justify-content-center border border-primary" style="width: 48px; height: 48px; background: rgba(56, 189, 248, 0.2);">
+                        <i class="fa-solid fa-user-helmet-safety text-primary fs-5"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Report KPI Cards -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-primary border-4">
+                        <p class="text-primary fw-bold mb-1 small text-uppercase">Total Reports</p>
+                        <h2 class="fw-bold text-white mb-0" id="statTotal">0</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-danger border-4">
+                        <p class="text-danger fw-bold mb-1 small text-uppercase">Pending</p>
+                        <h2 class="fw-bold text-white mb-0" id="statPending">0</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-warning border-4">
+                        <p class="text-warning fw-bold mb-1 small text-uppercase">Under Review / Action</p>
+                        <h2 class="fw-bold text-white mb-0" id="statReview">0</h2>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="dashboard-card border-bottom border-success border-4">
+                        <p class="text-success fw-bold mb-1 small text-uppercase">Completed</p>
+                        <h2 class="fw-bold text-white mb-0" id="statCompleted">0</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table & Tools Section -->
+            <div class="dashboard-card p-0 overflow-hidden mb-5">
+                <div class="card-header border-bottom py-4 px-4">
+                    <div class="row align-items-center">
+                        <div class="col-md-4">
+                            <h5 class="mb-0 fw-bold text-white"><i class="fa-solid fa-clock-rotate-left text-glow-blue me-2"></i> REPORT TRACKING LOG</h5>
+                        </div>
+                        <div class="col-md-8 d-flex justify-content-md-end gap-2 mt-3 mt-md-0">
+                            <input type="text" id="searchInput" class="form-control form-control-steel w-auto" placeholder="Search issues..." onkeyup="filterTable()">
+                            <select id="statusFilter" class="form-select form-select-steel w-auto" onchange="filterTable()">
+                                <option value="ALL">All Statuses</option>
+                                <option value="OPEN">Pending (Open)</option>
+                                <option value="IN_PROGRESS">Under Review</option>
+                                <option value="RESOLVED">Completed</option>
+                            </select>
+                            <button class="btn btn-steel-blue px-3" onclick="downloadCSV()"><i class="fa-solid fa-download me-2"></i> Export CSV</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="steel-table-container">
+                    <table class="steel-table mb-0" id="reportsTable">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Date</th>
+                                <th>Category</th>
+                                <th>Title / Description</th>
+                                <th>Priority</th>
+                                <th>Current Status</th>
+                                <th class="text-center">Timeline</th>
+                            </tr>
+                        </thead>
+                        <tbody id="myReportsTableBody">
+                            <tr><td colspan="7" class="text-center py-5">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Timeline Modal -->
+    <div class="modal fade" id="timelineModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold text-white"><i class="fa-solid fa-route text-glow-blue me-2"></i> Issue Resolution Timeline</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body p-4">
+                    <div class="tracking-timeline" id="timelineContainer">
+                        <!-- Injected by JS -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/api.js"></script>
+    <script src="js/auth.js"></script>
+    <script>
+        let allIssues = [];
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth('WORKER');
+
+            const name = localStorage.getItem('userName') || 'Operator';
+            document.getElementById('displayUserName').textContent = name;
+            
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            loadMyIssues();
+        });
+
+        function updateTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('currentDate').textContent = now.toLocaleDateString('en-US', options);
+            document.getElementById('currentTime').textContent = now.toLocaleTimeString('en-US', { hour12: false });
+        }
+
+        async function loadMyIssues() {
+            const tbody = document.getElementById('myReportsTableBody');
+            try {
+                allIssues = await ApiService.getMyIssues();
+                allIssues.sort((a,b) => b.id - a.id);
+                renderTable(allIssues);
+
+                // Update KPIs
+                let pending = 0, review = 0, completed = 0;
+                allIssues.forEach(i => {
+                    if(i.status === 'OPEN') pending++;
+                    if(i.status === 'IN_PROGRESS') review++;
+                    if(i.status === 'RESOLVED') completed++;
+                });
+                document.getElementById('statTotal').textContent = allIssues.length;
+                document.getElementById('statPending').textContent = pending;
+                document.getElementById('statReview').textContent = review;
+                document.getElementById('statCompleted').textContent = completed;
+
+            } catch (error) {
+                tbody.innerHTML = `<tr><td colspan="7" class="text-center py-4 text-danger">Error: ${error.message}</td></tr>`;
+            }
+        }
+
+        function renderTable(issues) {
+            const tbody = document.getElementById('myReportsTableBody');
+            tbody.innerHTML = '';
+            
+            if (issues.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center py-5 text-muted">No records found matching criteria.</td></tr>';
+                return;
+            }
+
+            issues.forEach(issue => {
+                let priorityBadge = '';
+                if(issue.priority === 'CRITICAL') priorityBadge = '<span class="badge bg-danger rounded-pill px-3">CRITICAL</span>';
+                else if(issue.priority === 'HIGH') priorityBadge = '<span class="badge bg-warning text-dark rounded-pill px-3">HIGH</span>';
+                else if(issue.priority === 'MEDIUM') priorityBadge = '<span class="badge bg-primary rounded-pill px-3">MEDIUM</span>';
+                else priorityBadge = '<span class="badge bg-secondary rounded-pill px-3">LOW</span>';
+
+                let statusBadge = '';
+                if(issue.status === 'RESOLVED') statusBadge = '<span class="text-success fw-bold"><i class="fa-solid fa-check"></i> RESOLVED</span>';
+                else if(issue.status === 'IN_PROGRESS') statusBadge = '<span class="text-warning fw-bold"><i class="fa-solid fa-spinner fa-spin"></i> UNDER REVIEW</span>';
+                else statusBadge = '<span class="text-danger fw-bold"><i class="fa-solid fa-exclamation"></i> PENDING</span>';
+
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="text-muted fw-bold">#${issue.id}</td>
+                    <td>Today</td>
+                    <td class="fw-bold text-white">${issue.category}</td>
+                    <td><div class="fw-bold text-white">${issue.title}</div><small class="text-muted d-block text-truncate" style="max-width:200px;">${issue.description}</small></td>
+                    <td>${priorityBadge}</td>
+                    <td>${statusBadge}</td>
+                    <td class="text-center">
+                        <button class="btn btn-sm btn-outline-info rounded-pill px-3" onclick="viewTimeline('${issue.status}')">
+                            <i class="fa-solid fa-diagram-project me-1"></i> Track
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function filterTable() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const status = document.getElementById('statusFilter').value;
+
+            const filtered = allIssues.filter(issue => {
+                const matchSearch = issue.title.toLowerCase().includes(search) || issue.description.toLowerCase().includes(search) || issue.category.toLowerCase().includes(search);
+                const matchStatus = status === 'ALL' || issue.status === status;
+                return matchSearch && matchStatus;
+            });
+
+            renderTable(filtered);
+        }
+
+        let tlModal;
+        function viewTimeline(currentStatus) {
+            const container = document.getElementById('timelineContainer');
+            
+            // Logic mapping
+            let step1 = 'completed';
+            let step2 = currentStatus !== 'OPEN' ? 'completed' : 'active';
+            let step3 = currentStatus === 'RESOLVED' ? 'completed' : (currentStatus === 'IN_PROGRESS' ? 'active' : '');
+            let step4 = currentStatus === 'RESOLVED' ? 'completed text-success' : '';
+
+            container.innerHTML = `
+                <div class="timeline-item ${step1}">
+                    <div class="timeline-content">
+                        <h6 class="text-white">Issue Submitted</h6>
+                        <p>Report successfully logged in central database.</p>
+                    </div>
+                </div>
+                <div class="timeline-item ${step2}">
+                    <div class="timeline-content">
+                        <h6 class="text-white">Manager Review</h6>
+                        <p>Assigned to departmental supervisor for assessment.</p>
+                    </div>
+                </div>
+                <div class="timeline-item ${step3}">
+                    <div class="timeline-content">
+                        <h6 class="text-white">Action Started</h6>
+                        <p>Maintenance or Safety team dispatched.</p>
+                    </div>
+                </div>
+                <div class="timeline-item ${step4}">
+                    <div class="timeline-content">
+                        <h6 class="${currentStatus === 'RESOLVED' ? 'text-success' : 'text-muted'}">Resolved</h6>
+                        <p>Issue fully remediated and closed.</p>
+                    </div>
+                </div>
+            `;
+            
+            if(!tlModal) tlModal = new bootstrap.Modal(document.getElementById('timelineModal'));
+            tlModal.show();
+        }
+
+        function downloadCSV() {
+            let csv = "ID,Category,Title,Priority,Status\n";
+            allIssues.forEach(i => {
+                csv += `${i.id},"${i.category}","${i.title}",${i.priority},${i.status}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.setAttribute('hidden', '');
+            a.setAttribute('href', url);
+            a.setAttribute('download', 'My_Safety_Reports.csv');
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+    </script>
+</body>
+</html>
